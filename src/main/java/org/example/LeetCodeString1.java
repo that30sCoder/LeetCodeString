@@ -14,23 +14,39 @@ public class LeetCodeString1 {
 
     private static int nonRepeating(String demoString) {
         char[] chars = demoString.toCharArray();
-        int count = 1;
-        char aChar = chars[0];
 
-        Map<Character,int[]> countMap = new HashMap<>();
         int counter = 0;
+        //Initialized right pointer
+        int k = 0;
+        //Initialized left pointer
+        int l = 0;
 
-        for (int k = 0; k < chars.length; k++) {
-                if(countMap.containsKey(chars[k]) ){
+        int maxCounter = 0;
+        //Hashmap for the string
 
-                    countMap.put(chars[k], new int[]{k - countMap.get(chars[k])[0], k - countMap.get(chars[k])[1]});
-                    counter = counter<countMap.get(chars[k])[1]?countMap.get(chars[k])[1]:counter;
+        //Basic logic - take 2 ptrs, use sliding window and keep the index of each character in particular substring inside hashMap
+
+
+       Map<Character,Integer> countMap = new HashMap<>();
+
+        while (k<demoString.length()) {
+            counter = 0;
+            for (int j = k;j<demoString.length();j++){
+
+                if(countMap.containsKey(chars[j]) && countMap.get(chars[j])>=k && countMap.get(chars[j])<=j){
+                    maxCounter = Math.max(counter,maxCounter);
+                    k = countMap.get(chars[j])+1;
+                    countMap.clear();
+                    break;
                 }
-                else{
-                    countMap.put(chars[k], new int[]{k,  k});
+                else {
+                    countMap.put(chars[j], j);
+                    counter++;
                 }
+
+            }
 
         }
-        return counter;
+        return Math.max(maxCounter,counter);
     }
 }
