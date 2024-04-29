@@ -9,29 +9,28 @@ public class LeetCodeString1 {
         //find the length of the longest substring without repeating characters.
         String demoString = "pwwkew";
         int output = nonRepeating(demoString);
-        System.out.println("The count is "+ output);
+        System.out.println("The count is " + output);
     }
 
     private static int nonRepeating(String demoString) {
         char[] chars = demoString.toCharArray();
         int count = 1;
+        char aChar = chars[0];
 
-        Map<Integer, List<Integer>> countMap = new HashMap<>();
-        int i = 0;
-        int j = 1;
-        for(int k = 0;k<chars.length;k++){
-            if(countMap.containsKey(chars[k])){
+        Map<Character,int[]> countMap = new HashMap<>();
+        int counter = 0;
 
-            }
+        for (int k = 0; k < chars.length; k++) {
+                if(countMap.containsKey(chars[k]) ){
+
+                    countMap.put(chars[k], new int[]{k - countMap.get(chars[k])[0], k - countMap.get(chars[k])[1]});
+                    counter = counter<countMap.get(chars[k])[1]?countMap.get(chars[k])[1]:counter;
+                }
+                else{
+                    countMap.put(chars[k], new int[]{k,  k});
+                }
+
         }
-        while(i<j && j<chars.length){
-            if(chars[i]!=chars[j] && (j-i)>(count -1)){
-                count++;
-                j++;
-            }
-            else
-                i++;
-        }
-        return count;
+        return counter;
     }
 }
